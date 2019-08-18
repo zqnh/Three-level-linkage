@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <title>三级联动</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+</head>
+
+<body>
+    <div>
+        <select name="input_province" id="sel_province">
+            <option value="">请选择</option>
+        </select>
+        <select name="input_city" id="sel_city">
+        </select>
+        <select name="input_area" id="sel_area" class="required">
+        </select>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        //自动加载行政区域一级菜单
+        $.ajax({
+            url: 'getProvince',
+            success: function (data) {
+                if(!data)return;
+                var html="";
+                    for(var e in data)
+                    {
+                        html+='<option value='+data[e].regionId+'>'+data[e].regionName+'</option>';
+                    }
+                    $("#sel_province").append(html);
+                    //通过change方法调用
+                    $("#sel_province").change(function () {
+
+                        $("#sel_city").html("");
+                        $("#sel_area").html("");
+                            getCity($(this).val());
+                    });
+            }
+        });
+
+        function getCity(id) {
+            $.ajax({
+                url: 'getCity',
+                data: {regionParentId:id},//传入的id
+                success: function (data) {
+                    if(!data)return;
+                    var html="";
+                    for(var i in data){
+                        html+='<option value='+data[i].regionId+'>'+data[i].regionName+'</option>';
+                    }
+                    $("#sel_city").append(html);
+                    $("#sel_city").change(function () {
+                        $("#sel_area").html("");
+                        getArea($(this).val());
+                    });
+                    $("#sel_city").get(0).selectedIndex=0;
+                    getArea($("#sel_city").val());
+                }
+            });
+
+        }
+
+        function getArea(id) {
+            $.ajax({
+                url: 'getArea',
+                data: {regionParentId:id},//传入的id
+                success: function (data) {
+                    if(!data)return;
+                    var html="";
+                    for(var i in data){
+                        html+='<option value='+data[i].regionId+'>'+data[i].regionName+'</option>';
+                    }
+                    $("#sel_area").append(html);
+                }
+            });
+
+        }
+    })
+
+</script>
+</html>

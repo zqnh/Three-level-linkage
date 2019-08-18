@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.zzqd.linkage.dao.AreaMapper" >
+    <resultMap id="BaseResultMap" type="net.zzqd.linkage.entity.Area" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="region_id" property="regionId" jdbcType="INTEGER" />
+        <result column="region_parent_id" property="regionParentId" jdbcType="INTEGER" />
+        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+        <result column="region_type" property="regionType" jdbcType="INTEGER" />
+        <result column="zipcode" property="zipCode" jdbcType="VARCHAR" />
+        <result column="quhao" property="quhao" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, parent_id, region_id, region_parent_id, region_name, region_type, zipcode, quhao, status
+    </sql>
+    <select id="getProvince"  resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"/>
+      from area a
+      WHERE
+      region_type=1
+    </select>
+<!--    获得行政区域二级city-->
+    <select id="getCity"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from area a
+        WHERE
+        a.region_parent_id=#{regionParentId}
+    </select>
+<!--    获得地区三级Area-->
+    <select id="getArea"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from area a
+        WHERE
+        a.region_parent_id=#{regionParentId}
+    </select>
+</mapper>
