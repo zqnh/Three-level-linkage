@@ -2,8 +2,8 @@
 #### 省市县三级联动Demo
 
 ##### 1.简单的三级联动前后台实现
-后台技术： SpringBoot+Mybatis+MySQL+Druid </br>
-前台技术：html+Jquery+Ajax</br>
+**后台技术**： SpringBoot+Mybatis+MySQL+Druid </br>
+**前台技术**：html+Jquery+Ajax</br>
  
 ##### 2.思路
 **数据库表**
